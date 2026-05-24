@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=0.5, maximum-scale=3.0">
+    <title>Livestrong Youth Association - Management App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f6f4;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .brand-header {
+            background: #0b5345;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 12px;
+            border-bottom: 4px solid #ffcc00;
+            position: relative;
+        }
+
+        .motto-container {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            color: #ffcc00;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+        .brand-logo {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            border: 3px solid #ffcc00;
+            object-fit: cover;
+            background: #ffffff;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .brand-logo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 204, 0, 0.6);
+        }
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .brand-title {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+        .text-white { color: #ffffff; }
+        .text-yellow { color: #ffcc00; }
+        
+        .brand-subtitle {
+            font-size: 14px;
+            color: #d1f2eb;
+            margin-top: 5px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .live-clock-container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: bold;
+            margin-top: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .section-title {
+            color: #0b5345;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 25px 20px 10px 20px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eaeaea;
+        }
+
+        /* Dashboard Grid */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding: 0 20px;
+        }
+        .card {
+            background: #e8f8f5;
+            border-radius: 6px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #a3e4d7;
+        }
+        .card p {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .card h3 {
+            font-size: 20px;
+            color: #0b5345;
+        }
+
+        /* Forms Styling */
+        .form-container {
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #0b5345;
+        }
+        .btn {
+            background: #0b5345;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .btn:hover {
+            background: #073b31;
+            color: #ffcc00;
+        }
+        .btn-danger {
+            background: #c0392b;
+            padding: 4px 8px;
+            font-size: 11px;
+            border-radius: 3px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-danger:hover {
+            background: #962d22;
+        }
+
+        /* Backup Area */
+        .backup-container {
+            background: #fdf2e9;
+            border: 1px solid #f5cba7;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-backup {
+            background: #e67e22;
+            color: white;
+        }
+        .btn-backup:hover {
+            background: #d35400;
+        }
+
+        /* Table Styling */
+        .table-responsive {
+            padding: 0 20px 20px 20px;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            white-space: nowrap;
+        }
+        th {
+            background: #0b5345;
+            color: white;
+            font-weight: normal;
+        }
+        tr:nth-child(even) {
+            background-color: #fdfefe;
+        }
+        tr:hover {
+            background-color: #f4f6f6;
+        }
+        .avatar-box {
+            width: 35px;
+            height: 35px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }
+        .badge-kisti { background-color: #27ae60; }
+        .badge-interest { background-color: #e67e22; }
+        .badge-loan { background-color: #2980b9; }
+
+        @media(min-width: 768px) {
+            .brand-header {
+                flex-direction: column;
+                align-items: center;
+                position: relative;
+            }
+            .live-clock-container {
+                position: absolute;
+                right: 20px;
+                top: 25px;
+                margin-top: 0;
+            }
+            .dashboard { grid-template-columns: 1fr 1fr 1fr 1fr; }
+            .grid-layout { grid-template-columns: 1fr 1fr; }
+            .backup-container { flex-direction: row; align-items: center; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="brand-header">
+        <div class="motto-container">
+            <span>বিশ্বাস</span>
+            <span>বন্ধুত্ব</span>
+            <span>ঐক্য</span>
+        </div>
+        <img src="lya.jpg" alt="Livestrong Logo" class="brand-logo" id="main-app-logo" title="লোগো পরিবর্তন করতে ক্লিক করুন" onclick="uploadAppLogo()">
+        <div class="brand-text">
+            <div class="brand-title">
+                <span class="text-white">LIVESTRONG</span> 
+                <span class="text-yellow">YOUTH ASSOCIATION</span>
+            </div>
+            <div class="brand-subtitle">Established 2020</div>
+        </div>
+        <div class="live-clock-container" id="live-clock">로드 হচ্ছে...</div>
+    </div>
+
+    <!-- ডাটা সুরক্ষার জন্য নতুন ব্যাকআপ জোন -->
+    <div class="backup-container">
+        <div>
+            <h4 style="color: #d35400;">🔒 ডাটা সুরক্ষিত রাখার প্যানেল</h4>
+            <p style="font-size: 12px; color: #666;">মোবাইল রিসেট বা ডাটা মুছে যাওয়ার ভয় এড়াতে প্রতিবার কাজ শেষে ব্যাকআপ ডাউনলোড করে রাখুন।</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="btn btn-backup" style="padding: 8px 15px; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;" onclick="exportDataData()">📥 ব্যাকআপ ডাউনলোড করুন</button>
+            <div style="background: #fff; padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 12px;">
+                <label style="font-weight: bold; color: #333;">📂 পুরাতন ডাটা আনুন: </label>
+                <input type="file" id="import-file" onchange="importDataData(event)" style="width: auto; padding: 0; border: none;">
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">ড্যাশবোর্ড</div>
+    <div class="dashboard">
+        <div class="card">
+            <p>সর্বমোট ফান্ড</p>
+            <h3 id="total-fund">৳ ০</h3>
+        </div>
+        <div class="card">
+            <p>চলতি ক্যাশ</p>
+            <h3 id="current-cash">৳ ০</h3>
+        </div>
+        <div class="card">
+            <p>বর্তমানে ঋণ দেওয়া আছে</p>
+            <h3 id="loan-out">৳ ০</h3>
+        </div>
+        <div class="card">
+            <p>মোট লাভ</p>
+            <h3 id="total-profit">৳ ০</h3>
+        </div>
+    </div>
+
+    <div class="grid-layout">
+        <div>
+            <div class="section-title">কিস্তি এন্ট্রি ফর্ম</div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="kisti-member">সদস্য:</label>
+                    <select id="kisti-member">
+                        <option value="">সদস্য নির্বাচন করুন</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="kisti-amount" placeholder="টাকার পরিমাণ">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="kisti-month" placeholder="কোন মাসের কিস্তি (যেমন: জানুয়ারি)">
+                </div>
+                <button class="btn" onclick="submitKisti()">জমা করুন</button>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">ঋণ ও লাভ (Interest) এন্ট্রি ফর্ম</div>
+            <div class="form-container">
+                <div class="form-group">
+                    <label for="loan-action">অ্যাকশন টাইপ:</label>
+                    <select id="loan-action">
+                        <option value="give">নতুন ঋণ প্রদান</option>
+                        <option value="interest">ঋণের লাভ (Interest) গ্রহণ</option>
+                        <option value="return">ঋণের আসল টাকা ফেরত গ্রহণ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="borrower-type">গ্রাহকের ধরন:</label>
+                    <select id="borrower-type" onchange="toggleBorrowerFields()">
+                        <option value="member">নিবন্ধিত সদস্য</option>
+                        <option value="outsider">বাইরের সাধারণ ব্যক্তি</option>
+                    </select>
+                </div>
+                <div class="form-group" id="member-select-group">
+                    <select id="loan-member">
+                        <option value="">সদস্য নির্বাচন করুন</option>
+                    </select>
+                </div>
+                <div id="outsider-fields" style="display: none; flex-direction: column; gap: 10px;">
+                    <div class="form-group">
+                        <input type="text" id="outsider-name" placeholder="ঋণগ্রহীতার নাম">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="outsider-phone" placeholder="মোবাইল নাম্বার">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="loan-amount" placeholder="টাকার পরিমাণ">
+                </div>
+                <button class="btn" onclick="submitLoanAction()">সাবমিট করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-title">সদস্যদের তথ্য (মোট ৮ জন)</div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>ছবি</th>
+                    <th>সদস্য আইডি</th>
+                    <th>নাম</th>
+                    <th>পদবি</th>
+                    <th>মোবাইল</th>
+                    <th>ইমেইল</th>
+                    <th>এনআইডি</th>
+                    <th>নমিনি</th>
+                </tr>
+            </thead>
+            <tbody id="members-table"></tbody>
+        </table>
+    </div>
+
+    <div class="section-title">ঋণগ্রহীতাদের তথ্য ও স্থিতি (সদস্য ও বহিরাগত)</div>
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>আইডি/টাইপ</th>
+                    <th>নাম ও যোগাযোগ</th>
+                    <th>গৃহীত মোট ঋণ (বাকি)</th>
+                    <th>পরিশোধিত মোট লাভ</th>
+                </tr>
+            </thead>
+            <tbody id="borrowers-table"></tbody>
+        </table>
+    </div>
+
+    <div class="grid-layout">
+        <div>
+            <div class="section-title">কিস্তি জমার ইতিহাস (মাস ভিত্তিক)</div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>তারিখ</th>
+                            <th>নাম (আইডি)</th>
+                            <th>মাস</th>
+                            <th>পরিমাণ</th>
+                            <th>অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="kisti-log-table"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">ঋণ ও লাভের (Interest) লেনদেনের ইতিহাস</div>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>তারিখ</th>
+                            <th>নাম</th>
+                            <th>বিবরণ</th>
+                            <th>পরিমাণ</th>
+                            <th>অ্যাকশন</th>
+                        </tr>
+                    </thead>
+                    <tbody id="interest-log-table"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ফিক্সড বাংলা ফন্ট ইস্যু (ব্লগস্পটের জন্য নামগুলো সরাসরি স্ট্রিং আকারে সুরক্ষিত রাখা হলো)
+    const defaultMembers = [
+        { id: "M-01", name: "মোঃ সাব্বির হোসেন", role: "সভাপতি", mobile: "+880 1736-813199", email: "rahim@gmail.com", nid: "9577845584", nominee: "তামান্না সুলতানা (স্ত্রী)", photo: "Sabbir.jpg" },
+        { id: "M-02", name: "অনির পাঠান", role: "সহ-সভাপতি", mobile: "+880 1797-774713", email: "rahim@gmail.com", nid: "123456789", nominee: "মা", photo: "Rahul.JPG" },
+        { id: "M-03", name: "জামির হোসেন", role: "সাধারণ সম্পাদক", mobile: "+880 1631-646020", email: "rafiq@gmail.com", nid: "456789123", nominee: "বাবা", photo: "" },
+        { id: "M-04", name: "পাবেল মিয়া", role: "যুগ্ন সম্পাদক ", mobile: "+880 1938-282024", email: "pabelrana50@gmail.com", nid: "7353982189", nominee: "তানজিয়া আক্তার(স্ত্রী)", photo: "" },
+        { id: "M-05", name: "মোঃ রিয়াদ মিয়া", role: "কোষাধ্যক্ষ ", mobile: "+880 1716-095556", email: "mdrahul95555@gmail.com", nid: "3755564865", nominee: "ডেজি আক্তার (স্ত্রী)", photo: "Riad.jpg" },
+        { id: "M-06", name: "রেজওয়ান করিম", role: "সহকারী কোষাধ্যক্ষ ", mobile: "+880 1715-756696", email: "rejwankarim23997@gmail.com", nid: "2403967009", nominee: "মিসেস ইতি আক্তার", photo: "" },
+        { id: "M-07", name: "ইয়াসিন ", role: "সাংগঠনিক সম্পাদক", mobile: "+880 1732-158917", email: "mdyasinnur@gmail.com", nid: "19927215663000162", nominee: "নুপুর আক্তার (স্ত্রী)", photo: "" },
+        { id: "M-08", name: "রুহুল আমীন  ", role: "সম্মানিত সদস্য", mobile: "+880 1645-845264", email: "rahultalukder1998@gmail.com", nid: "3305584660", nominee: "সীমা আক্তার (স্ত্রী)", photo: "Ruhul.jpg" }
+    ];
+
+    let membersData = JSON.parse(localStorage.getItem('lya_members'));
+    if (!membersData) {
+        membersData = defaultMembers.map(m => ({...m, loanGiven: 0, interestPaid: 0}));
+        localStorage.setItem('lya_members', JSON.stringify(membersData));
+    }
+
+    let outsidersData = JSON.parse(localStorage.getItem('lya_outsiders')) || [];
+    
+    let account = JSON.parse(localStorage.getItem('lya_account')) || {
+        totalFund: 221000,  
+        currentCash: 221000, 
+        loanOut: 0,    
+        totalProfit: 0
+    };
+
+    let kistiLogs = JSON.parse(localStorage.getItem('lya_kisti_logs')) || [];
+    let loanLogs = JSON.parse(localStorage.getItem('lya_loan_logs')) || [];
+
+    window.onload = function() {
+        const savedLogo = localStorage.getItem('lya_app_logo');
+        if (savedLogo) {
+            document.getElementById('main-app-logo').src = savedLogo;
+        }
+
+        renderMembers();
+        populateDropdowns();
+        updateDashboard();
+        renderLogs();
+        
+        updateLiveClock();
+        setInterval(updateLiveClock, 1000);
+    };
+
+    function saveData() {
+        localStorage.setItem('lya_members', JSON.stringify(membersData));
+        localStorage.setItem('lya_outsiders', JSON.stringify(outsidersData));
+        localStorage.setItem('lya_account', JSON.stringify(account));
+        localStorage.setItem('lya_kisti_logs', JSON.stringify(kistiLogs));
+        localStorage.setItem('lya_loan_logs', JSON.stringify(loanLogs));
+    }
+
+    // ব্যাকআপ ফাইল তৈরি ও ডাউনলোড করার সিস্টেম (আজীবন সুরক্ষার জন্য)
+    function exportDataData() {
+        const backupData = {
+            membersData, outsidersData, account, kistiLogs, loanLogs,
+            logo: localStorage.getItem('lya_app_logo')
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "LIVESTRONG_DATA_BACKUP.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
+    // পুরাতন ডাটা ফাইল থেকে রিস্টোর করার সিস্টেম
+    function importDataData(event) {
+        const fileReader = new FileReader();
+        fileReader.onload = function(e) {
+            try {
+                const parsedData = JSON.parse(e.target.result);
+                if(parsedData.account) {
+                    membersData = parsedData.membersData;
+                    outsidersData = parsedData.outsidersData;
+                    account = parsedData.account;
+                    kistiLogs = parsedData.kistiLogs;
+                    loanLogs = parsedData.loanLogs;
+                    if(parsedData.logo) localStorage.setItem('lya_app_logo', parsedData.logo);
+                    
+                    saveData();
+                    updateDashboard();
+                    renderMembers();
+                    populateDropdowns();
+                    renderLogs();
+                    alert("🎉 অভিনন্দন! আপনার সব ডাটা সফলভাবে রিস্টোর হয়েছে।");
+                } else {
+                    alert("ভুল ফাইল সিলেক্ট করেছেন। সঠিক ব্যাকআপ ফাইল দিন।");
+                }
+            } catch(err) {
+                alert("ডাটা রিস্টোর করতে সমস্যা হয়েছে। ফাইলটি সঠিক নয়।");
+            }
+        }
+        fileReader.readAsText(event.target.files[0]);
+    }
+
+    function getBDDateObject() {
+        const localDate = new Date();
+        const bdBanglaStr = localDate.toLocaleString("en-US", {timeZone: "Asia/Dhaka"});
+        return new Date(bdBanglaStr);
+    }
+
+    function updateLiveClock() {
+        const bdDate = getBDDateObject();
+        const dateStr = bdDate.toLocaleDateString('bn-BD', { year: 'numeric', month: 'numeric', day: 'numeric' });
+        const timeStr = bdDate.toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        document.getElementById('live-clock').innerText = `📅 ${dateStr} ⋮ ⏰ ${timeStr}`;
+    }
+
+    function getFormattedDate() {
+        const bdDate = getBDDateObject();
+        return bdDate.toLocaleDateString('bn-BD') + " " + bdDate.toLocaleTimeString('bn-BD', {hour: '2-digit', minute:'2-digit'});
+    }
+
+    function uploadAppLogo() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result;
+                    document.getElementById('main-app-logo').src = base64Image;
+                    localStorage.setItem('lya_app_logo', base64Image);
+                    alert("লোগো সফলভাবে পরিবর্তন ও সেভ হয়েছে!");
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        input.click();
+    }
+
+    // টাকার চিহ্ন '৳' টেক্সট হিসেবে ফিক্স করা হলো 
+    function updateDashboard() {
+        document.getElementById('total-fund').innerText = "৳ " + account.totalFund.toLocaleString('bn-BD');
+        document.getElementById('current-cash').innerText = "৳ " + account.currentCash.toLocaleString('bn-BD');
+        document.getElementById('loan-out').innerText = "৳ " + account.loanOut.toLocaleString('bn-BD');
+        document.getElementById('total-profit').innerText = "৳ " + account.totalProfit.toLocaleString('bn-BD');
+    }
+
+    function toggleBorrowerFields() {
+        const type = document.getElementById('borrower-type').value;
+        if (type === 'outsider') {
+            document.getElementById('member-select-group').style.display = 'none';
+            document.getElementById('outsider-fields').style.display = 'flex';
+        } else {
+            document.getElementById('member-select-group').style.display = 'flex';
+            document.getElementById('outsider-fields').style.display = 'none';
+        }
+    }
+
+    function uploadPhoto(memberId) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const member = membersData.find(m => m.id === memberId);
+                    if (member) {
+                        member.photo = event.target.result; 
+                        saveData();
+                        renderMembers();
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        input.click();
+    }
+
+    function renderMembers() {
+        const memberTable = document.getElementById('members-table');
+        const borrowerTable = document.getElementById('borrowers-table');
+        
+        memberTable.innerHTML = "";
+        borrowerTable.innerHTML = "";
+
+        membersData.forEach(m => {
+            let photoHtml = m.photo ? `<img src="${m.photo}" title="ছবি পরিবর্তন করতে ক্লিক করুন" onclick="uploadPhoto('${m.id}')" style="cursor:pointer;">` : `<span onclick="uploadPhoto('${m.id}')" style="font-size:9px; color:#fff; cursor:pointer; background:#555; padding:3px; border-radius:3px;">Add</span>`;
+            
+            memberTable.innerHTML += `
+                <tr>
+                    <td><div class="avatar-box">${photoHtml}</div></td>
+                    <td>${m.id}</td>
+                    <td><b>${m.name}</b></td>
+                    <td>${m.role}</td>
+                    <td>${m.mobile}</td>
+                    <td>${m.email}</td>
+                    <td>${m.nid}</td>
+                    <td>${m.nominee}</td>
+                </tr>
+            `;
+
+            borrowerTable.innerHTML += `
+                <tr>
+                    <td><span class="badge badge-kisti">${m.id}</span></td>
+                    <td><b>${m.name}</b><br><small>${m.mobile}</small></td>
+                    <td>৳ ${(m.loanGiven || 0).toLocaleString('bn-BD')}</td>
+                    <td>৳ ${(m.interestPaid || 0).toLocaleString('bn-BD')}</td>
+                </tr>
+            `;
+        });
+
+        outsidersData.forEach(out => {
+            if(out.loanGiven > 0 || out.interestPaid > 0) {
+                borrowerTable.innerHTML += `
+                    <tr>
+                        <td><span class="badge badge-loan">বহিরাগত</span></td>
+                        <td><b>${out.name}</b><br><small>${out.mobile}</small></td>
+                        <td>৳ ${(out.loanGiven || 0).toLocaleString('bn-BD')}</td>
+                        <td>৳ ${(out.interestPaid || 0).toLocaleString('bn-BD')}</td>
+                    </tr>
+                `;
+            }
+        });
+    }
+
+    function populateDropdowns() {
+        const kistiSelect = document.getElementById('kisti-member');
+        const loanSelect = document.getElementById('loan-member');
+        
+        kistiSelect.innerHTML = '<option value="">সদস্য নির্বাচন করুন</option>';
+        loanSelect.innerHTML = '<option value="">সদস্য নির্বাচন করুন</option>';
+
+        membersData.forEach(m => {
+            let opt1 = document.createElement('option');
+            opt1.value = m.id;
+            opt1.innerText = m.name + " (" + m.id + ")";
+            kistiSelect.appendChild(opt1);
+
+            let opt2 = document.createElement('option');
+            opt2.value = m.id;
+            opt2.innerText = m.name + " (" + m.id + ")";
+            loanSelect.appendChild(opt2);
+        });
+    }
+
+    function submitKisti() {
+        const memberId = document.getElementById('kisti-member').value;
+        const amount = parseFloat(document.getElementById('kisti-amount').value);
+        const month = document.getElementById('kisti-month').value || "চলতি মাস";
+
+        if(!memberId || isNaN(amount) || amount <= 0) {
+            alert("দয়া করে সঠিক সদস্য এবং টাকার পরিমাণ ইনপুট দিন।");
+            return;
+        }
+
+        const member = membersData.find(m => m.id === memberId);
+        account.totalFund += amount;
+        account.currentCash += amount;
+
+        kistiLogs.push({
+            id: Date.now(),
+            date: getFormattedDate(), 
+            memberId: member.id,
+            name: member.name + " (" + member.id + ")",
+            month: month,
+            amount: amount
+        });
+
+        saveData();
+        updateDashboard();
+        renderLogs();
+        
+        document.getElementById('kisti-amount').value = "";
+        document.getElementById('kisti-month').value = "";
+        alert("কিস্তি সফলভাবে জমা হয়েছে!");
+    }
+
+    function submitLoanAction() {
+        const action = document.getElementById('loan-action').value;
+        const borrowerType = document.getElementById('borrower-type').value;
+        const amount = parseFloat(document.getElementById('loan-amount').value);
+
+        if(isNaN(amount) || amount <= 0) {
+            alert("দয়া করে সঠিক টাকার পরিমাণ দিন।");
+            return;
+        }
+
+        let targetName = "";
+        let targetId = "";
+        let targetMobile = "";
+
+        if (borrowerType === 'member') {
+            const memberId = document.getElementById('loan-member').value;
+            if(!memberId) { alert("সদস্য নির্বাচন করুন।"); return; }
+            const member = membersData.find(m => m.id === memberId);
+            targetName = member.name;
+            targetId = member.id;
+            targetMobile = member.mobile;
+
+            if (action === "give") {
+                if(amount > account.currentCash) { alert("চলতি ক্যাশে পর্যাপ্ত টাকা নেই!"); return; }
+                account.currentCash -= amount;
+                account.loanOut += amount;
+                member.loanGiven = (member.loanGiven || 0) + amount;
+            } else if (action === "interest") {
+                account.totalProfit += amount;
+                account.currentCash += amount;
+                account.totalFund += amount;
+                member.interestPaid = (member.interestPaid || 0) + amount;
+            } else if (action === "return") {
+                if(amount > (member.loanGiven || 0)) { alert("পরিশোধের পরিমাণ ঋণের চেয়ে বেশি।"); return; }
+                account.currentCash += amount;
+                account.loanOut -= amount;
+                member.loanGiven = (member.loanGiven || 0) - amount;
+            }
+        } else {
+            const name = document.getElementById('outsider-name').value.trim();
+            const phone = document.getElementById('outsider-phone').value.trim();
+
+            if(!name) { alert("অনুগ্রহ করে বহিরাগত ব্যক্তির নাম লিখুন।"); return; }
+            targetName = name;
+            targetMobile = phone || "N/A";
+            targetId = "Outsider";
+
+            let outsider = outsidersData.find(o => o.name.toLowerCase() === name.toLowerCase());
+            if(!outsider) {
+                outsider = { name: name, mobile: targetMobile, loanGiven: 0, interestPaid: 0 };
+                outsidersData.push(outsider);
+            }
+
+            if (action === "give") {
+                if(amount > account.currentCash) { alert("চলতি ক্যাশে পর্যাপ্ত টাকা নেই!"); return; }
+                account.currentCash -= amount;
+                account.loanOut += amount;
+                outsider.loanGiven = (outsider.loanGiven || 0) + amount;
+            } else if (action === "interest") {
+                account.totalProfit += amount;
+                account.currentCash += amount;
+                account.totalFund += amount;
+                outsider.interestPaid = (outsider.interestPaid || 0) + amount;
+            } else if (action === "return") {
+                if(amount > (outsider.loanGiven || 0)) { alert("পরিশোধের পরিমাণ ঋণের চেয়ে বেশি।"); return; }
+                account.currentCash += amount;
+                account.loanOut -= amount;
+                outsider.loanGiven = (outsider.loanGiven || 0) - amount;
+            }
+        }
+
+        let logTypeStr = "";
+        if(action === "give") logTypeStr = "নতুন ঋণ প্রদান";
+        else if(action === "interest") logTypeStr = "ঋণের লাভ (Interest)";
+        else if(action === "return") logTypeStr = "ঋণের আসল ফেরত";
+
+        loanLogs.push({
+            id: Date.now(),
+            date: getFormattedDate(), 
+            name: targetName + " (" + targetId + ")",
+            mobile: targetMobile,
+            type: logTypeStr,
+            actionType: action, 
+            borrowerType: borrowerType,
+            buyerName: targetName,
+            amount: amount
+        });
+
+        saveData();
+        updateDashboard();
+        renderMembers();
+        renderLogs();
+        
+        document.getElementById('loan-amount').value = "";
+        document.getElementById('outsider-name').value = "";
+        document.getElementById('outsider-phone').value = "";
+        alert("লেনদেন সফলভাবে সম্পন্ন ও সংরক্ষিত হয়েছে!");
+    }
+
+    function renderLogs() {
+        const kistiLogTable = document.getElementById('kisti-log-table');
+        const interestLogTable = document.getElementById('interest-log-table');
+
+        kistiLogTable.innerHTML = kistiLogs.length === 0 ? `<tr><td colspan="5" style="text-align:center; color:#999;">কোনো কিস্তি জমা হয়নি</td></tr>` : "";
+        kistiLogs.forEach(log => {
+            kistiLogTable.innerHTML += `
+                <tr>
+                    <td>${log.date}</td>
+                    <td>${log.name}</td>
+                    <td><span class="badge badge-kisti">${log.month}</span></td>
+                    <td><b>৳ ${log.amount.toLocaleString('bn-BD')}</b></td>
+                    <td><button class="btn-danger" onclick="deleteKistiLog(${log.id})">ডিলিট</button></td>
+                </tr>
+            `;
+        });
+
+        interestLogTable.innerHTML = loanLogs.length === 0 ? `<tr><td colspan="5" style="text-align:center; color:#999;">কোনো লেনদেন হয়নি</td></tr>` : "";
+        loanLogs.forEach(log => {
+            let badgeStyle = log.actionType === 'give' ? 'badge-interest' : (log.actionType === 'return' ? 'badge-loan' : 'badge-kisti');
+            interestLogTable.innerHTML += `
+                <tr>
+                    <td>${log.date}</td>
+                    <td>${log.name}</td>
+                    <td><span class="badge ${badgeStyle}">${log.type}</span></td>
+                    <td><b>৳ ${log.amount.toLocaleString('bn-BD')}</b></td>
+                    <td><button class="btn-danger" onclick="deleteLoanLog(${log.id})">ডিলিট</button></td>
+                </tr>
+            `;
+        });
+    }
+
+    function deleteKistiLog(id) {
+        if(!confirm("আপনি কি নিশ্চিত যে এই কিস্তি এন্ট্রিটি ডিলিট করতে চান?")) return;
+        const logIndex = kistiLogs.findIndex(l => l.id === id);
+        if(logIndex > -1) {
+            const log = kistiLogs[logIndex];
+            account.totalFund -= log.amount;
+            account.currentCash -= log.amount;
+            kistiLogs.splice(logIndex, 1);
+            saveData();
+            updateDashboard();
+            renderMembers(); 
+            renderLogs();
+        }
+    }
+
+    function deleteLoanLog(id) {
+        if(!confirm("আপনি কি নিশ্চিত যে এই লেনদেনটি ডিলিট করতে চান?")) return;
+        const logIndex = loanLogs.findIndex(l => l.id === id);
+        if(logIndex > -1) {
+            const log = loanLogs[logIndex];
+            
+            if (log.borrowerType === 'member') {
+                const member = membersData.find(m => m.id === log.name.split('(')[1].replace(')','').trim());
+                if(member) {
+                    if (log.actionType === "give") {
+                        account.currentCash += log.amount;
+                        account.loanOut -= log.amount;
+                        member.loanGiven = (member.loanGiven || 0) - log.amount;
+                    } else if (log.actionType === "interest") {
+                        account.totalProfit -= log.amount;
+                        account.currentCash -= log.amount;
+                        account.totalFund -= log.amount;
+                        member.interestPaid = (member.interestPaid || 0) - log.amount;
+                    } else if (log.actionType === "return") {
+                        account.currentCash -= log.amount;
+                        account.loanOut += log.amount;
+                        member.loanGiven = (member.loanGiven || 0) + log.amount;
+                    }
+                }
+            } else {
+                const outsider = outsidersData.find(o => o.name === log.buyerName);
+                if(outsider) {
+                    if (log.actionType === "give") {
+                        account.currentCash += log.amount;
+                        account.loanOut -= log.amount;
+                        outsider.loanGiven = (outsider.loanGiven || 0) - log.amount;
+                    } else if (log.actionType === "interest") {
+                        account.totalProfit -= log.amount;
+                        account.currentCash -= log.amount;
+                        account.totalFund -= log.amount;
+                        outsider.interestPaid = (outsider.interestPaid || 0) - log.amount;
+                    } else if (log.actionType === "return") {
+                        account.currentCash -= log.amount;
+                        account.loanOut += log.amount;
+                        outsider.loanGiven = (outsider.loanGiven || 0) + log.amount;
+                    }
+                }
+            }
+            loanLogs.splice(logIndex, 1);
+            saveData();
+            updateDashboard();
+            renderMembers();
+            renderLogs();
+        }
+    }
+</script>
+
+</body>
+</html>
